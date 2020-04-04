@@ -13,10 +13,10 @@ func _ready():
 	_check_player_words_length()
 
 
-func _on_PlayerText_text_entered(new_text):
+func _on_PlayerText_text_entered():
 	_add_to_player_words()
-	
-	
+
+
 func _on_OK_Button_pressed():
 	if is_story_done():
 		get_tree().reload_current_scene()
@@ -44,7 +44,7 @@ func _check_player_words_length():
 
 func _tell_story():
 	displayTextNode.text = current_story.story % player_words
-	
+
 func _prompt_player():
 	displayTextNode.text += "can I have "  + current_story.prompts[player_words.size()] + " please?"
 	playerTextNode.grab_focus()	
@@ -59,16 +59,17 @@ func _end_game():
 func set_current_story():
 	randomize()
 	##  CHOSE ONE OF THE FOLLOWING METHODS TO GET THE STORY
-	
+
 	## -- USE THIS METHOD TO GET STORY VIA JSON FILE
-	#set_current_Story_via_JSON_FILE()
+	set_current_Story_via_JSON_FILE()
 
 	## -- OR USE THIS TO GET STORY VIA NODE METHOD
-	set_current_Story_via_STORY_NODES()
+	#set_current_Story_via_STORY_NODES()
 
 
 func set_current_Story_via_JSON_FILE():
 	var stories = get_file_from_json("storybook.json")
+	print (stories.size())
 	current_story = stories[randi() % stories.size()]
 
 func set_current_Story_via_STORY_NODES():
@@ -83,6 +84,8 @@ func get_file_from_json(_filename):
 	var file = File.new()
 	file.open(_filename, File.READ)
 	var text = file.get_as_text()
+	print (text)
 	var data = parse_json(text)
+	print (data)
 	file.close()
 	return data
