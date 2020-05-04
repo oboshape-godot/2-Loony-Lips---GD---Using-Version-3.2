@@ -19,7 +19,8 @@ func _on_PlayerText_text_entered():
 
 func _on_OK_Button_pressed():
 	if is_story_done():
-		get_tree().reload_current_scene()
+		if get_tree().reload_current_scene() != OK:
+			print("Error reloading Scene")
 	else:
 		_add_to_player_words()
 
@@ -69,8 +70,8 @@ func set_current_story():
 
 func set_current_Story_via_JSON_FILE():
 	var stories = get_file_from_json("storybook.json")
-	print (stories.size())
 	current_story = stories[randi() % stories.size()]
+	print (current_story)
 
 func set_current_Story_via_STORY_NODES():
 	var stories = $StoryBook.get_child_count()
@@ -84,8 +85,10 @@ func get_file_from_json(_filename):
 	var file = File.new()
 	file.open(_filename, File.READ)
 	var text = file.get_as_text()
-	print (text)
 	var data = parse_json(text)
-	print (data)
 	file.close()
 	return data
+
+
+func _on_OK_Button_focus_entered() -> void:
+	pass # Replace with function body.
